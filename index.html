@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Mummy 💕</title>
+
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:linear-gradient(135deg,#ff9ecb,#ff4d88);
+  color:white;
+  text-align:center;
+  overflow-x:hidden;
+}
+
+/* pages */
+.page{
+  display:none;
+  min-height:100vh;
+  padding:20px;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+.active{display:flex; animation:fade 0.6s;}
+@keyframes fade{from{opacity:0;}to{opacity:1;}}
+
+/* button */
+button{
+  padding:12px 25px;
+  border:none;
+  border-radius:25px;
+  background:white;
+  color:#ff4d88;
+  font-weight:bold;
+  margin-top:20px;
+}
+
+/* music */
+#musicBtn{
+  position:fixed;
+  top:15px;
+  right:15px;
+  background:white;
+  color:#ff4d88;
+  border-radius:50%;
+  padding:10px;
+  z-index:999;
+}
+
+/* typing */
+.typing{
+  font-size:26px;
+  font-weight:bold;
+}
+
+/* cake */
+#cakeBox{font-size:90px; position:relative;}
+#candle{font-size:30px;}
+
+/* fireworks */
+.firework{
+  position:fixed;
+  width:10px;
+  height:10px;
+  background:yellow;
+  border-radius:50%;
+  animation:explode 1s linear;
+}
+@keyframes explode{
+  to{
+    transform:translate(var(--x),var(--y));
+    opacity:0;
+  }
+}
+
+/* confetti */
+.confetti{
+  position:fixed;
+  width:6px;
+  height:6px;
+  background:white;
+  top:0;
+  animation:fall 3s linear;
+}
+@keyframes fall{
+  to{transform:translateY(100vh);}
+}
+
+/* hearts */
+.heart{
+  position:fixed;
+  top:-10px;
+  animation:fall 6s linear infinite;
+}
+
+/* balloons */
+.balloon{
+  position:fixed;
+  bottom:-50px;
+  font-size:25px;
+  animation:rise 8s linear infinite;
+}
+@keyframes rise{
+  to{transform:translateY(-120vh);}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" src="your-music.mp3"></audio>
+<button id="musicBtn" onclick="toggleMusic()">🎶</button>
+
+<!-- PAGE 1 -->
+<div class="page active" id="p1">
+  <h1 id="title"></h1>
+  <p id="sub"></p>
+  <button onclick="next(2)">Enter 🎀</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="p2">
+  <h1>🎂 Cake Ceremony 🎂</h1>
+
+  <div id="cakeBox">
+    🎂
+    <div id="candle">🕯️</div>
+  </div>
+
+  <button onclick="cutCake()">Cut Cake 🔪</button>
+  <p id="cakeMsg"></p>
+
+  <button onclick="next(3)">Next 💕</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="p3">
+  <h1>💌 Message</h1>
+  <p id="msg"></p>
+  <button onclick="next(4)">Memories 🎥</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="p4">
+  <h1>🎬 Memories</h1>
+  <video controls width="90%">
+    <source src="your-video.mp4">
+  </video>
+  <p>Yeh moments meri life ke best hain 💖</p>
+  <button onclick="next(5)">Final 🎁</button>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="p5">
+  <h1>I Love You Mummy 💕</h1>
+</div>
+
+<script>
+function next(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p'+n).classList.add('active');
+
+  if(n==1) startIntro();
+  if(n==3) startMsg();
+}
+
+/* typing intro */
+function startIntro(){
+  type("Happy Birthday Mummy Ji 💕","title",50);
+  setTimeout(()=>type("Sabse pyari aur strongest mummy ke liye 💖","sub",30),2000);
+}
+
+/* typing message */
+function startMsg(){
+  type("Mummy ji, aap meri life ka sabse important hissa ho 💖\n\nAapne hamesha mujhe support kiya 💕\n\nAaj jo bhi hu sirf aapki wajah se hu 💫\n\nThank you for everything ❤️","msg",30);
+}
+
+function type(text,id,speed){
+  let i=0;
+  let el=document.getElementById(id);
+  el.innerHTML="";
+  function typing(){
+    if(i<text.length){
+      el.innerHTML+= text.charAt(i)=="\n"?"<br>":text.charAt(i);
+      i++;
+      setTimeout(typing,speed);
+    }
+  }
+  typing();
+}
+
+/* cake cut celebration */
+function cutCake(){
+  document.getElementById("candle").innerHTML="💨";
+  document.getElementById("cakeMsg").innerHTML="🎉 Cake Cut! Happy Birthday Mummy 💕";
+
+  // confetti
+  for(let i=0;i<50;i++){
+    let c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+
+  // fireworks
+  for(let i=0;i<20;i++){
+    let f=document.createElement("div");
+    f.className="firework";
+    f.style.left="50%";
+    f.style.top="50%";
+    f.style.setProperty('--x',(Math.random()*300-150)+"px");
+    f.style.setProperty('--y',(Math.random()*300-150)+"px");
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1000);
+  }
+}
+
+function toggleMusic(){
+  let m=document.getElementById("music");
+  m.paused?m.play():m.pause();
+}
+
+/* hearts */
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.innerHTML="💗";
+  h.className="heart";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},600);
+
+/* balloons */
+setInterval(()=>{
+  let b=document.createElement("div");
+  b.innerHTML="🎈";
+  b.className="balloon";
+  b.style.left=Math.random()*100+"vw";
+  document.body.appendChild(b);
+  setTimeout(()=>b.remove(),8000);
+},2000);
+
+/* start intro */
+startIntro();
+</script>
+
+</body>
+</html>
